@@ -1,28 +1,36 @@
 import { useState } from "react";
-import { axiosInstance } from "../../lib/axios";
 import { useDispatch } from "react-redux";
-import { login } from "../../features/Auth/slices/AuthSlice";
+import { loginUser } from "../../features/Auth/slices/AuthSlice";
 import { useNavigate } from "react-router-dom";
+import { login } from "../../features/Auth/services/loginService";
+import Loading from "../ui/Loading";
 
 function Login() {
   const [email, setEmail] = useState("soman@gmail.com");
   const [password, setPassword] = useState("soman@123");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   async function handleLogin() {
     try {
-      const { data } = await axiosInstance.post("/auth/login", {
-        emailId: email,
-        password,
-      });
-      dispatch(login(data.data));
-      navigate("/feed");
+      setLoading(true);
+      const data = await login(email, password);
+      if (data) {
+        dispatch(loginUser(data));
+        return navigate("/feed");
+      }else {
+        setError("Invalid credentials")
+      }
     } catch (err) {
+      setError(err?.response?.data || "something went wrong");
       console.log(err.message);
+    } finally {
+      setLoading(false);
     }
   }
-
+  if (loading) return <Loading />;
   return (
     <>
       <div className="hero bg-base-100 min-h-screen p-4">
@@ -53,6 +61,7 @@ function Login() {
               <div>
                 <a className="link link-hover">Forgot password?</a>
               </div>
+              <p className="text-red-400 font-serif">{error}</p>
               <button
                 onClick={handleLogin}
                 className="btn btn-success bg-green-700 btn-block btn-active"

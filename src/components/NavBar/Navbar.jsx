@@ -1,18 +1,32 @@
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { axiosInstance } from "../../lib/axios";
+import { logout } from "../../features/Auth/slices/AuthSlice";
 
 function Navbar() {
   const { user } = useSelector((store) => store.auth);
+  const dispatch = useDispatch();
+  const naviagte = useNavigate();
+  // Logout functionality
+  const handleLogout = async () => {
+    try {
+      await axiosInstance.post("/auth/logout", {});
+      dispatch(logout());
+      console.log("Logged out successfully");
+      return naviagte(`/login`);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
   return (
     <>
       <div className="navbar bg-base-300 shadow-sm">
-        <Link to="/">
-          <div className="flex-1">
-            <a className="btn btn-ghost text-xl">DevTinder</a>
-          </div>
-        </Link>
+        <div className="flex-1">
+          <Link className="btn btn-ghost text-xl">DevTinder</Link>
+        </div>
+
         {user && (
-          <div className="flex gap-2">
+          <div className="flex gap-8">
             <div className="dropdown dropdown-end mx-8 p-2">
               <div
                 tabIndex={0}
@@ -40,7 +54,7 @@ function Navbar() {
                   <a>Settings</a>
                 </li>
                 <li>
-                  <a>Logout</a>
+                  <Link onClick={handleLogout}>Logout</Link>
                 </li>
               </ul>
             </div>

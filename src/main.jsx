@@ -8,8 +8,10 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <Provider store = {store}>
+      <Provider store={store}>
+        {/* <PersistGate loading={<p>Loading....</p>} persistor={persistor}> */}
         <App />
+        {/* </PersistGate> */}
       </Provider>
     </QueryClientProvider>
   </StrictMode>
