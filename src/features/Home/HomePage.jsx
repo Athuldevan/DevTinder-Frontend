@@ -10,28 +10,29 @@ function HomePage() {
   const { user } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  async function viewProfile() {
-    try {
-      const { data } = await axiosInstance.get("/profile");
-      dispatch(loginUser(data));
-    } catch (err) {
-      if (err.status === 401 || err.status === 400) {
-        return navigate("/login");
-      }
-      console.log(err);
-    }
-  }
+
   useEffect(() => {
+    async function viewProfile() {
+      try {
+        const { data } = await axiosInstance.get("/profile");
+        dispatch(loginUser(data));
+      } catch (err) {
+        if (err.status === 401 || err.status === 400) {
+          return navigate("/login");
+        }
+        console.log(err);
+      }
+    }
     if (!user) {
       viewProfile();
     }
-  }, []);
+  }, [dispatch, navigate, user]);
 
   return (
     <>
       <Navbar />
       <Outlet />
-      <Footer></Footer>
+      <Footer />
     </>
   );
 }

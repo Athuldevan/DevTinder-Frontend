@@ -17,11 +17,12 @@ function Login() {
     try {
       setLoading(true);
       const data = await login(email, password);
+      console.log(data);
       if (data) {
         dispatch(loginUser(data));
         return navigate("/feed");
-      }else {
-        setError("Invalid credentials")
+      } else {
+        setError("Invalid credentials");
       }
     } catch (err) {
       setError(err?.response?.data || "something went wrong");

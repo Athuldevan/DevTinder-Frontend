@@ -10,9 +10,10 @@ function Navbar() {
   // Logout functionality
   const handleLogout = async () => {
     try {
-      await axiosInstance.post("/auth/logout", {});
-      dispatch(logout());
-      console.log("Logged out successfully");
+      const data = await axiosInstance.post("/auth/logout", {});
+
+      if (data) dispatch(logout());
+
       return naviagte(`/login`);
     } catch (err) {
       console.log(err.message);
@@ -45,10 +46,10 @@ function Navbar() {
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
               >
                 <li>
-                  <a className="justify-between">
+                  <Link to="/profile" className="justify-between">
                     Profile
                     <span className="badge">New</span>
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a>Settings</a>
