@@ -1,45 +1,72 @@
-import { useState } from "react";
-import { axiosInstance } from "../../lib/axios";
 import useEditProfile from "../../features/Profile/hooks/useEditProfile";
-import { useDispatch } from "react-redux";
-import { loginUser } from "../../features/Auth/slices/AuthSlice";
-interface User {
+
+interface EditFormUser {
   firstName: string;
   lastName: string;
   age: number;
-  gender: string;
-  about: string;
-  photoUrl: string;
+  gender?: string;
+  about?: string;
+  photoUrl?: string;
   _id: string;
 }
-interface EditFormProps {
-  user: User;
-}
-export default function EditForm({ user }: EditFormProps) {
-  const [firstName, setFirstName] = useState(user?.firstName);
-  const [lastName, setLastName] = useState(user?.lastName);
-  const [age, setAge] = useState(user?.age);
-  const [gender, setGender] = useState(user?.gender);
-  const [about, setAbout] = useState(user?.about);
-  const [photoUrl, setPhotoUrl] = useState(user?.photoUrl);
-  const dispatch = useDispatch();
 
+interface PreviewData {
+  firstName: string;
+  lastName: string;
+  age: number;
+  gender?: string;
+  about?: string;
+  photoUrl?: string;
+}
+
+interface EditFormProps {
+  user: EditFormUser;
+  previewData: PreviewData;
+  setPreviewData: React.Dispatch<React.SetStateAction<PreviewData>>;
+}
+
+export default function EditForm({ user, previewData, setPreviewData }: EditFormProps) {
   const { mutate, isPending, isSuccess, isError } = useEditProfile();
+
 
   function handleSave(e: React.FormEvent) {
     e.preventDefault();
 
     const updatedData = {
-      firstName,
-      lastName,
-      age,
-      gender,
-      about,
-      photoUrl,
+      firstName: previewData.firstName,
+      lastName: previewData.lastName,
+      age: previewData.age,
+      gender: previewData.gender,
+      about: previewData.about,
+      photoUrl: previewData.photoUrl,
     };
 
     mutate({ id: user._id, updateData: updatedData });
-    dispatch(loginUser(updatedData));
+  }
+
+  // Update handlers that modify preview data in real-time
+  const handleFirstNameChange = (value: string) => {
+    setPreviewData((prev) => ({ ...prev, firstName: value }));
+  };
+
+  const handleLastNameChange = (value: string) => {
+    setPreviewData((prev) => ({ ...prev, lastName: value }));
+  };
+
+  const handleAgeChange = (value: number) => {
+    setPreviewData((prev) => ({ ...prev, age: value }));
+  };
+
+  const handleGenderChange = (value: string) => {
+    setPreviewData((prev) => ({ ...prev, gender: value }));
+  };
+
+  const handleAboutChange = (value: string) => {
+    setPreviewData((prev) => ({ ...prev, about: value }));
+  };
+
+  const handlePhotoUrlChange = (value: string) => {
+    setPreviewData((prev) => ({ ...prev, photoUrl: value }));
   }
 
   return (
@@ -53,10 +80,10 @@ export default function EditForm({ user }: EditFormProps) {
                 <legend className="fieldset-legend">First Name</legend>
                 <input
                   type="text"
-                  value={firstName}
+                  value={previewData.firstName}
                   className="input input-xl"
                   placeholder="Type here"
-                  onChange={(e) => setFirstName(e.target.value)}
+                  onChange={(e) => handleFirstNameChange(e.target.value)}
                 />
               </fieldset>
               {/* Last Name */}
@@ -64,10 +91,10 @@ export default function EditForm({ user }: EditFormProps) {
                 <legend className="fieldset-legend">Last Name</legend>
                 <input
                   type="text"
-                  value={lastName}
+                  value={previewData.lastName}
                   className="input input-xl"
                   placeholder="Type here"
-                  onChange={(e) => setLastName(e.target.value)}
+                  onChange={(e) => handleLastNameChange(e.target.value)}
                 />
               </fieldset>
               {/* Age  */}
@@ -75,10 +102,10 @@ export default function EditForm({ user }: EditFormProps) {
                 <legend className="fieldset-legend">Age</legend>
                 <input
                   type="number"
-                  value={age}
+                  value={previewData.age}
                   className="input input-xl"
                   placeholder="Type here"
-                  onChange={(e) => setAge(+e.target.value)}
+                  onChange={(e) => handleAgeChange(+e.target.value)}
                 />
               </fieldset>
 
@@ -87,10 +114,10 @@ export default function EditForm({ user }: EditFormProps) {
                 <legend className="fieldset-legend">Gender</legend>
                 <input
                   type="text"
-                  value={gender}
+                  value={previewData.gender}
                   className="input input-xl"
                   placeholder="Type here"
-                  onChange={(e) => setGender(e.target.value)}
+                  onChange={(e) => handleGenderChange(e.target.value)}
                 />
               </fieldset>
 
@@ -99,10 +126,10 @@ export default function EditForm({ user }: EditFormProps) {
                 <legend className="fieldset-legend">About</legend>
                 <input
                   type="text"
-                  value={about}
+                  value={previewData.about}
                   className="input input-xl"
                   placeholder="Type here"
-                  onChange={(e) => setAbout(e.target.value)}
+                  onChange={(e) => handleAboutChange(e.target.value)}
                 />
               </fieldset>
               {/* Photo-Url  */}
@@ -110,10 +137,10 @@ export default function EditForm({ user }: EditFormProps) {
                 <legend className="fieldset-legend">Photo</legend>
                 <input
                   type="text"
-                  value={photoUrl}
+                  value={previewData.photoUrl}
                   className="input input-xl"
                   placeholder="Type here"
-                  onChange={(e) => setPhotoUrl(e.target.value)}
+                  onChange={(e) => handlePhotoUrlChange(e.target.value)}
                 />
               </fieldset>
               {/* Save Button */}

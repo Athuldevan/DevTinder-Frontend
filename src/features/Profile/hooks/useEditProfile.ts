@@ -8,10 +8,17 @@ export default function useEditProfile() {
   const dispatch = useDispatch();
   const mutation = useMutation({
     mutationFn: editProfile,
-    onSuccess: (data) => {
-      console.log("✅ Profile successfully updated:", data);
-      dispatch(loginUser(data));
-      //Automaticllly referesh the feed data after mutaing or updating
+    onSuccess: (response) => {
+      console.log("✅ Profile successfully updated:", response);
+      // The API response should contain the full updated user object
+      // Update Redux with the complete user data from server
+      if (response?.data) {
+        dispatch(loginUser(response.data));
+      } else if (response) {
+        // If response structure is different, use the response directly
+        dispatch(loginUser(response));
+      }
+      //Automatically refresh the feed data after mutating or updating
       queryClient.invalidateQueries({ queryKey: ["feed"] });
     },
     onError: (error: any) => {
