@@ -23,7 +23,14 @@ function Navbar() {
     <>
       <div className="navbar bg-base-300 shadow-sm">
         <div className="flex-1">
-          <Link className="btn btn-ghost text-xl">DevTinder</Link>
+          <Link to="/" className="btn btn-ghost text-xl">
+            DevTinder
+          </Link>
+        </div>
+
+        {/* REQUESTS */}
+        <div className="flex justify-center items-center ">
+          <Link to="/requests">Requests</Link>
         </div>
 
         {user && (
@@ -52,7 +59,7 @@ function Navbar() {
                   </Link>
                 </li>
                 <li>
-                  <a>Settings</a>
+                  <Link to="/connections">Connections</Link>
                 </li>
                 <li>
                   <Link onClick={handleLogout}>Logout</Link>

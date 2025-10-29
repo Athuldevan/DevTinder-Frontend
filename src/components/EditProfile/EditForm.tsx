@@ -1,3 +1,4 @@
+import { useState } from "react";
 import useEditProfile from "../../features/Profile/hooks/useEditProfile";
 
 interface EditFormUser {
@@ -25,11 +26,16 @@ interface EditFormProps {
   setPreviewData: React.Dispatch<React.SetStateAction<PreviewData>>;
 }
 
-export default function EditForm({ user, previewData, setPreviewData }: EditFormProps) {
+export default function EditForm({
+  user,
+  previewData,
+  setPreviewData,
+}: EditFormProps) {
   const { mutate, isPending, isSuccess, isError } = useEditProfile();
-
+  const [showToast, setShowToast] = useState(false);
 
   function handleSave(e: React.FormEvent) {
+    setShowToast(false);
     e.preventDefault();
 
     const updatedData = {
@@ -42,6 +48,7 @@ export default function EditForm({ user, previewData, setPreviewData }: EditForm
     };
 
     mutate({ id: user._id, updateData: updatedData });
+    setShowToast(true);
   }
 
   // Update handlers that modify preview data in real-time
@@ -67,7 +74,7 @@ export default function EditForm({ user, previewData, setPreviewData }: EditForm
 
   const handlePhotoUrlChange = (value: string) => {
     setPreviewData((prev) => ({ ...prev, photoUrl: value }));
-  }
+  };
 
   return (
     <>
@@ -154,6 +161,16 @@ export default function EditForm({ user, previewData, setPreviewData }: EditForm
           </div>
         </div>
       </div>
+
+      {showToast && (
+        <>
+          <div className="toast toast-top toast-start">
+            <div className="alert alert-info">
+              <span>New mail arrived.</span>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }
