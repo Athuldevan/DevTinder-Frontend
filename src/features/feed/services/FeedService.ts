@@ -7,3 +7,17 @@ export const getFeed = async function () {
     console.log(err.mesage);
   }
 };
+
+//Send Conneciton service
+export const sendConnection = async function ({status, toUserId}) {
+  try {
+    const { data } = await axiosInstance.post(
+      `/request/send/${status}/${toUserId}`
+    );
+    console.log(data);
+    return data;
+  } catch (err: any) {
+    console.log(err.message);
+    throw err;
+  }
+};

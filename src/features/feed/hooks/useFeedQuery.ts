@@ -1,7 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
-import { getFeed } from "../services/FeedService";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getFeed, sendConnection } from "../services/FeedService";
 
 export default function useFeedQuery() {
+  const queryClient = useQueryClient();
   const {
     data: feed,
     isLoading,
@@ -12,5 +13,17 @@ export default function useFeedQuery() {
     staleTime: 1000 * 60 * 5,
   });
 
-  return { feed, isLoading, isError };
+  //mutatio
+  const mutation = useMutation({
+    mutationFn: sendConnection,
+    onSuccess: (data) => {
+      console.log(`data : ${data}`);
+      queryClient.invalidateQueries({ queryKey: ["feed"] });
+    },
+    onError: (error) => {
+      console.error("Failed to send connection:", error);
+    },
+  });
+
+  return { feed, isLoading, isError, mutation };
 }
