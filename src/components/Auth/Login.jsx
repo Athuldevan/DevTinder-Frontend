@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../features/Auth/slices/AuthSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../features/Auth/services/loginService";
 import Loading from "../ui/Loading";
 
@@ -149,12 +149,14 @@ function Login() {
           <div className="text-center">
             <p className="text-slate-500 text-sm">
               Don't have an account?{" "}
-              <button
-                type="button"
-                className="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200"
-              >
-                Sign up
-              </button>
+              <Link to="/signup">
+                <button
+                  type="button"
+                  className="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200"
+                >
+                  Sign up
+                </button>
+              </Link>
             </p>
           </div>
         </form>

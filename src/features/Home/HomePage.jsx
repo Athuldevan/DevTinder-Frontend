@@ -17,7 +17,7 @@ function HomePage() {
         const { data } = await axiosInstance.get("/profile");
         dispatch(loginUser(data));
       } catch (err) {
-        if (err.status === 401 || err.status === 400) {
+        if (err.status === 401) {
           return navigate("/login");
         }
         console.log(err);

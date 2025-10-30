@@ -1,6 +1,7 @@
 import { useState } from "react";
-import useEditProfile from "../../features/Profile/hooks/useEditProfile";
-
+import React from "react"
+import useEditProfile from "../../features/Profile/hooks/useEditProfile";import ReactTagInput from "@pathofdev/react-tag-input";
+import "@pathofdev/react-tag-input/build/index.css";
 interface EditFormUser {
   firstName: string;
   lastName: string;
@@ -9,6 +10,7 @@ interface EditFormUser {
   about?: string;
   photoUrl?: string;
   _id: string;
+  skills?: string[];
 }
 
 interface PreviewData {
@@ -18,6 +20,7 @@ interface PreviewData {
   gender?: string;
   about?: string;
   photoUrl?: string;
+  skills?: string[];
 }
 
 interface EditFormProps {
@@ -45,6 +48,7 @@ export default function EditForm({
       gender: previewData.gender,
       about: previewData.about,
       photoUrl: previewData.photoUrl,
+      skills: previewData?.skills,
     };
 
     mutate({ id: user._id, updateData: updatedData });
@@ -74,6 +78,14 @@ export default function EditForm({
 
   const handlePhotoUrlChange = (value: string) => {
     setPreviewData((prev) => ({ ...prev, photoUrl: value }));
+  };
+  const handleSkillsChange = (value: string) => {
+    const skillsArray = value
+      .split(",") // split by comma
+      .map((skill) => skill.trim()) // remove spaces
+      .filter((skill) => skill.length > 0); // remove empty entries
+
+    setPreviewData((prev) => ({ ...prev, skills: skillsArray }));
   };
 
   return (
@@ -139,6 +151,21 @@ export default function EditForm({
                   onChange={(e) => handleAboutChange(e.target.value)}
                 />
               </fieldset>
+
+              {/* Skills */}
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">Skills</legend>
+
+                <ReactTagInput
+                  tags={previewData.skills || []}
+                  onChange={(newSkills) =>
+                    setPreviewData((prev) => ({ ...prev, skills: newSkills }))
+                  }
+                  placeholder="Type a skill and press Enter"
+                />
+              </fieldset>
+
+              {/* ////////////////// */}
               {/* Photo-Url  */}
               <fieldset className="fieldset">
                 <legend className="fieldset-legend">Photo</legend>
