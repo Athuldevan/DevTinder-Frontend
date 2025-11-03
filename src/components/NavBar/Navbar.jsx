@@ -29,9 +29,12 @@ function Navbar() {
         </div>
 
         {/* REQUESTS */}
-        <div className="flex justify-center items-center ">
+        <div className="flex justify-center items-center gap-2">
           <Link to="/requests">Requests</Link>
+          <Link to="/login">Login</Link>
         </div>
+
+        
 
         {user && (
           <div className="flex gap-8">
