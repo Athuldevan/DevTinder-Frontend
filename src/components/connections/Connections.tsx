@@ -21,7 +21,9 @@ export default function Connections() {
 
   if (isPending) {
     return <ConnectionsSkeleton />;
-  }
+  };
+console.log(connections)
+  if(connections.length === 0) return <p>NO connections</p>
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 py-8 px-4">
@@ -38,7 +40,7 @@ export default function Connections() {
 
         {/* Connections List */}
         <div className="space-y-4">
-          {connections.map((connection: ConnectionProp, index: number) => (
+          {connections?.map((connection: ConnectionProp, index: number) => (
             <div
               key={index}
               className="bg-slate-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-700 hover:border-slate-600"

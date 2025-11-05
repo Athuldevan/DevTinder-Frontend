@@ -6,8 +6,14 @@ export async function login(email: string, password: string) {
       emailId: email,
       password,
     });
-    console.log("from login Servce" + data.data);
-    return data.data;
+    // API might return user directly or wrapped under `data.data.user`.
+    // Also backend may return a token (e.g. JWT) under data.data.token or data.token.
+    const user = data.data?.user ?? data.data;
+    const token = data.data?.token ?? data.token ?? null;
+
+    // If token exists, return both so callers can persist it and set auth headers.
+    if (token) return { user, token };
+    return user;
   } catch (err: any) {
     console.log(err.message);
   }

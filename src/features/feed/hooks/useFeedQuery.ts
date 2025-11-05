@@ -24,6 +24,7 @@ export default function useFeedQuery() {
       console.error("Failed to send connection:", error);
     },
   });
+  console.log(feed)
 
   return { feed, isLoading, isError, mutation };
 }

@@ -1,6 +1,6 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "../../components/NavBar/Navbar";
-import Footer from "../../components/Auth/footer";
+import Footer from "../../components/Auth/Footer";
 import { useEffect } from "react";
 import { axiosInstance } from "../../lib/axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,19 +12,22 @@ function HomePage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function viewProfile() {
+    const fetchProfile = async () => {
       try {
         const { data } = await axiosInstance.get("/profile");
+        console.log(data);
         dispatch(loginUser(data));
       } catch (err) {
-        if (err.status === 401) {
-          return navigate("/login");
+        if (err.response?.status === 401) {
+          navigate("/login");
+          return;
         }
-        console.log(err);
+        console.error("Profile fetch error:", err);
       }
-    }
+    };
+
     if (!user) {
-      viewProfile();
+      fetchProfile();
     }
   }, [dispatch, navigate, user]);
 

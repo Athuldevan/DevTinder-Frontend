@@ -1,38 +1,44 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { loginUser } from "../../features/Auth/slices/AuthSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../features/Auth/services/loginService";
 import Loading from "../ui/Loading";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../features/Auth/slices/AuthSlice";
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("athuldevan90@gmail.com");
+  const [password, setPassword] = useState("athul@123");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
 
   async function handleLogin(e) {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      setError("");
-      const data = await login(email, password);
-      console.log(data);
-      if (data) {
-        dispatch(loginUser(data));
-        navigate("/feed");
-      } else {
-        setError("Invalid credentials");
-      }
-    } catch (err) {
-      setError(err?.response?.data || "Something went wrong");
-      console.log(err.message);
-    } finally {
-      setLoading(false);
+  e.preventDefault();
+  try {
+    setLoading(true);
+    setError("");
+    const data = await login(email, password);
+    console.log("login response:", data);
+
+    if (data) {
+      // loginService now normalizes the response to return the user object
+      // (handles both `data.data.user` and `data.data`). Dispatch the user
+      // directly into the auth slice so `store.auth.user` is available.
+      dispatch(loginUser(data)); // 👈 store user in Redux
+      return navigate("/feed");
+    } else {
+      setError("Invalid credentials");
     }
+  } catch (err) {
+    setError(err?.response?.data || "Something went wrong");
+    console.log(err.message);
+  } finally {
+    setLoading(false);
   }
+}
+
 
   if (loading)
     return (

@@ -2,14 +2,15 @@ import { axiosInstance } from "../../../lib/axios";
 export const getFeed = async function () {
   try {
     const { data } = await axiosInstance.get(`/users/feed`);
-    return data.userFeedSuggestion;
+    console.log(data?.userFeedSuggestion);
+    return data?.userFeedSuggestion;
   } catch (err: any) {
-    console.log(err.mesage);
+    console.log(err.message);
   }
 };
 
 //Send Conneciton service
-export const sendConnection = async function ({status, toUserId}) {
+export const sendConnection = async function ({ status, toUserId }) {
   try {
     const { data } = await axiosInstance.post(
       `/request/send/${status}/${toUserId}`

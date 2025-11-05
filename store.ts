@@ -7,7 +7,8 @@ import storage from "redux-persist/lib/storage";
 const persistConfig = {
   key: "devtinder-auth",
   storage,
-  whitelist: ["user", "isLoggedIn"], // persist user and isLoggedIn
+  // Persist user, isLoggedIn and token (if backend returns a token)
+  whitelist: ["user", "isLoggedIn", "token"],
 };
 
 // Making our Auth reducer persistable

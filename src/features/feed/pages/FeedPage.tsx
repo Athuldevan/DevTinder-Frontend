@@ -19,9 +19,6 @@ const FeedPage = () => {
   if (isError) return <p>Something went wrong while fetching</p>;
   return (
     <div className="flex justify-center items-center p-16">
-      {/* {feed.map((user: User) => (
-        <FeedCard user={user} />
-      ))} */}
       <FeedCard user = {feed[0]}/>
     </div>
   );

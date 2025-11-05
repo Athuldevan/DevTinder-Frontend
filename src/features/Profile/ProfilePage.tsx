@@ -16,6 +16,7 @@ interface PreviewData {
 
 export default function ProfilePage() {
   const { user } = useSelector((store: RootState) => store.auth);
+  console.log(user);
 
   // Local state for live preview
   const [previewData, setPreviewData] = useState<PreviewData>({
@@ -41,7 +42,7 @@ export default function ProfilePage() {
         skills: user?.skills,
       });
     }
-  }, [user]);
+  }, []);
 
   if (!user) return <p>Loading user...</p>;
 

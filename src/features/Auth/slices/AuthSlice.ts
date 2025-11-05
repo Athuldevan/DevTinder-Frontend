@@ -17,11 +17,13 @@ interface User {
 interface AuthState {
   user: User | null;
   isLoggedIn?: boolean;
+  token?: string | null;
 }
 
 const initialState: AuthState = {
   user: null,
   isLoggedIn: false,
+  token: null,
 };
 
 export const authSlice = createSlice({
@@ -29,12 +31,20 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     loginUser: (state, action) => {
-      state.user = action.payload;
+      // Accept either a user object or an object { user, token }
+      const payload = action.payload;
+      if (payload && typeof payload === "object" && (payload.user || payload.token)) {
+        state.user = payload.user ?? payload;
+        state.token = payload.token ?? null;
+      } else {
+        state.user = payload;
+      }
       state.isLoggedIn = true;
     },
     logout: (state) => {
       state.user = null
       state.isLoggedIn=false;
+      state.token = null;
     },
   },
 });
