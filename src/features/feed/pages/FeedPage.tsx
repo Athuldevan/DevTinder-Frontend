@@ -14,12 +14,13 @@ interface User {
 
 const FeedPage = () => {
   const { feed, isLoading, isError } = useFeedQuery();
-  console.log(feed)
+  console.log(feed);
   if (isLoading) return <Loading />;
-  if (isError) return <p>Something went wrong while fetching</p>;
+  if (isError)
+    return <p>No New User..You visited all the users.. See you soon...</p>;
   return (
     <div className="flex justify-center items-center p-16">
-      <FeedCard user = {feed[0]}/>
+      <FeedCard user={feed[0]} />
     </div>
   );
 };
