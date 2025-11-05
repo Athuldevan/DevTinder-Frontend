@@ -1,14 +1,22 @@
 import UseRequest from "../../features/Requests/hooks/useRequest";
 import Loading from "../../components/ui/Loading";
 import UseReviewRequest from "../../features/Requests/hooks/useReviewRequest";
-
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Toast from "../ui/Toast";
+import { toast } from "react-toastify";
 const RequestCard = () => {
-  const { data: requests, isLoading, } = UseRequest();
+  const { data: requests, isLoading } = UseRequest();
   const { mutate, isPending } = UseReviewRequest();
+  const { user } = useSelector((store) => store.auth);
+  const navigate = useNavigate();
+  if (!user) {
+    navigate("/login");
+  }
 
   if (isLoading || isPending) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center">
+      <div className="min-h-screen bg-linear-to-br from-slate-900 to-slate-800 flex items-center justify-center">
         <div className="text-center space-y-4">
           <Loading />
           <p className="text-slate-400 font-medium">
@@ -18,8 +26,6 @@ const RequestCard = () => {
       </div>
     );
   }
-
-  console.log("mutate", mutate);
 
   if (requests?.length === 0 || !requests) {
     return (
@@ -46,9 +52,11 @@ const RequestCard = () => {
           <p className="text-slate-400 text-lg mb-6">
             When developers send you connection requests, they'll appear here.
           </p>
-          <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200">
-            Explore Developers
-          </button>
+          <Link to="/feed">
+            <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200">
+              Explore Developers
+            </button>
+          </Link>
         </div>
       </div>
     );
@@ -77,7 +85,8 @@ const RequestCard = () => {
                 clipRule="evenodd"
               />
             </svg>
-            {requests?.length} pending request{requests?.length !== 1 ? "s" : ""}
+            {requests?.length} pending request
+            {requests?.length !== 1 ? "s" : ""}
           </div>
         </div>
 

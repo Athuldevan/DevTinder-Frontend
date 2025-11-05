@@ -5,6 +5,7 @@ import ProfilePage from "./features/Profile/ProfilePage";
 import ConnectionsPage from "./features/connections/ConnectionsPage";
 import RequestPage from "./features/Requests/Pages/RequestPage";
 import SignupPage from "./features/Auth/SignupPage";
+import Toast from "./components/ui/Toast";
 const HomePage = lazy(() => import("./features/Home/HomePage"));
 const Loading = lazy(() => import("./components/ui/Loading"));
 const LoginPage = lazy(() => import("./features/Auth/LoginPage"));
@@ -26,6 +27,7 @@ function App() {
             </Route>
           </Routes>
         </BrowserRouter>
+      
       </Suspense>
     </>
   );

@@ -4,10 +4,11 @@ import { login } from "../../features/Auth/services/loginService";
 import Loading from "../ui/Loading";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../features/Auth/slices/AuthSlice";
+import { toast } from "react-toastify";
 
 function Login() {
-  const [email, setEmail] = useState("athuldevan90@gmail.com");
-  const [password, setPassword] = useState("athul@123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -23,10 +24,8 @@ function Login() {
     console.log("login response:", data);
 
     if (data) {
-      // loginService now normalizes the response to return the user object
-      // (handles both `data.data.user` and `data.data`). Dispatch the user
-      // directly into the auth slice so `store.auth.user` is available.
-      dispatch(loginUser(data)); // 👈 store user in Redux
+      dispatch(loginUser(data)); 
+      toast("Login Sucessfull")
       return navigate("/feed");
     } else {
       setError("Invalid credentials");

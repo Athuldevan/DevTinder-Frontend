@@ -1,10 +1,11 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "../../components/NavBar/Navbar";
-import Footer from "../../components/Auth/Footer";
 import { useEffect } from "react";
+import Footer from "../../components/Footer/Footer";
 import { axiosInstance } from "../../lib/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../Auth/slices/AuthSlice";
+import Hero from "../../components/ui/Hero";
 
 function HomePage() {
   const { user } = useSelector((store) => store.auth);
@@ -30,12 +31,17 @@ function HomePage() {
       fetchProfile();
     }
   }, [dispatch, navigate, user]);
-
   return (
+    
     <>
       <Navbar />
-      <Outlet />
-      <Footer />
+        {location.pathname === "/" && <Hero />}
+
+
+    
+    <Outlet />
+
+     <Footer/>
     </>
   );
 }
