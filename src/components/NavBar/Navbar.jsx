@@ -34,8 +34,6 @@ function Navbar() {
           <Link to="/login">Login</Link>
         </div>
 
-        
-
         {user && (
           <div className="flex gap-8">
             <div className="dropdown dropdown-end mx-8 p-2">
@@ -63,6 +61,9 @@ function Navbar() {
                 </li>
                 <li>
                   <Link to="/connections">Connections</Link>
+                </li>
+                <li>
+                  <Link to="/Premium">Premium</Link>
                 </li>
                 <li>
                   <Link onClick={handleLogout}>Logout</Link>

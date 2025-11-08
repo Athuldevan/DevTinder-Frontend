@@ -5,7 +5,7 @@ import ProfilePage from "./features/Profile/ProfilePage";
 import ConnectionsPage from "./features/connections/ConnectionsPage";
 import RequestPage from "./features/Requests/Pages/RequestPage";
 import SignupPage from "./features/Auth/SignupPage";
-import Toast from "./components/ui/Toast";
+import PremiumPage from "./features/premium/pages/premiumPage";
 const HomePage = lazy(() => import("./features/Home/HomePage"));
 const Loading = lazy(() => import("./components/ui/Loading"));
 const LoginPage = lazy(() => import("./features/Auth/LoginPage"));
@@ -24,10 +24,10 @@ function App() {
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/connections" element={<ConnectionsPage />} />
               <Route path="/requests" element={<RequestPage />} />
+              <Route path="/premium" element={<PremiumPage />} />
             </Route>
           </Routes>
         </BrowserRouter>
-      
       </Suspense>
     </>
   );
